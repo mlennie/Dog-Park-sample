@@ -9,4 +9,19 @@
 
 # Make sure your secret_key_base is kept private
 # if you're sharing your code publicly.
-DogPark::Application.config.secret_key_base = '49142658a94d73a3d2573033c37ee9a811c8d2e58846dcea6879c145e1423fb3d3cd3b361e88c4c4803f930d862151ce497691bc00774b337a0ee48b30987269'
+require 'securerandom'
+
+def secure_token
+  token_file = Rails.root.join('.secret')
+  if File.exist?(token_file)
+    # Use the existing token.
+    File.read(token_file).chomp
+  else
+    # Generate a new token and store it in token_file.
+    token = SecureRandom.hex(64)
+    File.write(token_file, token)
+    token
+  end
+end
+
+DogPark::Application.config.secret_key_base = secure_token
