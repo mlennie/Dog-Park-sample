@@ -1,3 +1,12 @@
 <% provide(:title, 'Home') %>
-<h1>Welcome To Dog Park</h1>
-<p>Find me in app/views/static_pages/home.html.erb</p>
+<div class="center hero-unit">
+  <h1>Welcome to Dog Park</h1>
+
+  <h2>
+    Here you can play with all you neighbourhood buddies.
+  </h2>
+
+  <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary", id: "button" %>
+</div>
+
+
