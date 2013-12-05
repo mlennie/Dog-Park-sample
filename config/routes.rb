@@ -1,5 +1,5 @@
 DogPark::Application.routes.draw do
-  get "dogs/new"
+  resources :dogs
   root  'static_pages#home'
   get '/signup',  to: 'dogs#new'
   get '/help',    to: 'static_pages#help'    

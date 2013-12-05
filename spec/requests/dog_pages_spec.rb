@@ -10,4 +10,40 @@ describe "DogPages" do
   	it { should have_title('Sign up')}
 
   end
+
+  context "signup" do 
+
+    before { visit signup_path }
+
+    let(:submit) { "Create my account" }
+
+    context "with invalid information" do 
+      it "should not create a dog" do 
+        expect { click_button submit }.to_not change(Dog, :count)
+      end
+    end
+
+    context "with valid information" do 
+      before do 
+        fill_in "Name",                  with: "Baxter Mcard"
+        fill_in "Email",                 with: "baxter@bark.com"
+        fill_in "Password",              with: "woofwoof"
+        fill_in "Password Confirmation", with: "woofwoof"
+      end
+
+      it "should create a dog" do 
+        expect { click_button submit }.to change(Dog, :count).by(1)
+      end
+    end
+  end
+
+  context "profile page" do 
+  	let(:dog) { FactoryGirl.create(:dog) }
+  	before { visit dog_path(dog) }
+
+  	it { should have_content(dog.name) }
+  	it { should have_title(dog.name) }
+  end
+
+
 end
