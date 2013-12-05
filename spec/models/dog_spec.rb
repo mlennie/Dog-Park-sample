@@ -73,9 +73,30 @@ describe Dog do
   	it { should_not be_valid }
   end
 
+  context "when password is too short" do 
+    before { @dog.password = @dog.password_confirmation = "a" * 5 }
+    it { should be_invalid }
+  end
+
   context "when password doesn't match confirmation" do 
   	before { @dog.password_confirmation = "mismatch" }
   	it { should_not be_valid }
+  end
+
+  context "return value of authenticate method" do 
+    before { @dog.save }
+    let(:found_dog) { Dog.find_by(email: @dog.email) }
+
+    context "with valid password" do 
+      it { should eq found_dog.authenticate(@dog.password) }
+    end
+
+    context "with invalid password" do 
+      let(:dog_for_invalid_password) { found_dog.authenticate("invalid") }
+
+      it { should_not eq dog_for_invalid_password }
+      specify { expect(dog_for_invalid_password).to be_false }
+    end
   end
 end
 
