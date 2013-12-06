@@ -21,6 +21,18 @@ describe "DogPages" do
       it "should not create a dog" do 
         expect { click_button submit }.to_not change(Dog, :count)
       end
+
+      context "after submission" do 
+        before { click_button submit }
+
+        it { should have_title('Sign up') }
+        it { should have_content('error') }
+        it { should have_content("Name can't be blank") }
+        it { should have_content("Email can't be blank") }
+        it { should have_content("Email is invalid") }
+        it { should have_content("Password can't be blank") }
+        it { should have_content("Password is too short (minimum is 6 characters)")}
+      end
     end
 
     context "with valid information" do 

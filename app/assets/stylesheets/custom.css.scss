@@ -1,6 +1,5 @@
 @import "bootstrap";
 
-
 /* mixins, variables, etc. */
 
 $grayMediumLight: #eaeaea;
@@ -147,6 +146,7 @@ aside {
   @include box_sizing;
 }
 
+
 /* forms */
 
 input, textarea, select, .uneditable-input {
@@ -172,7 +172,6 @@ input {
   @extend .control-group;
   @extend .error;
 }
-
 
 
 
