@@ -10,6 +10,7 @@ class DogsController < ApplicationController
   def create
   	@dog = Dog.new(dog_params)
   	if @dog.save
+      flash[:success] = "Welcome to Dog Park!"
   		redirect_to @dog
   	else
   		render 'new'
