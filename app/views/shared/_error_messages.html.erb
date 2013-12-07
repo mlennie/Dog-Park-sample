@@ -1,10 +1,10 @@
-<% if @dog.errors.any? %>
+<% if @master.errors.any? %>
   <div id="error_explanation">
     <div class="alert alert-error">
-      The form contains <%= pluralize(@dog.errors.count, "error") %>.
+      The form contains <%= pluralize(@master.errors.count, "error") %>.
     </div>
     <ul>
-    <% @dog.errors.full_messages.each do |msg| %>
+    <% @master.errors.full_messages.each do |msg| %>
       <li>* <%= msg %></li>
     <% end %>
     </ul>

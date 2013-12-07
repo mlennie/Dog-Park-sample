@@ -1,7 +1,11 @@
 DogPark::Application.routes.draw do
   resources :dogs
+  resources :masters
+  resources :sessions, only: [:new, :create, :destroy]
   root 'static_pages#home'
-  get '/signup',  to: 'dogs#new'
+  get '/join',  to: 'masters#new'
+  get '/playtime',   to: 'sessions#new'
+  get '/naptime', to: 'sessions#destroy'
   get '/help',    to: 'static_pages#help'    
   get '/about',   to: 'static_pages#about'
   get '/contact', to: 'static_pages#contact'
