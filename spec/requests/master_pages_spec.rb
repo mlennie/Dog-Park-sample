@@ -37,10 +37,10 @@ describe "MasterPages" do
 
     context "with valid information" do 
       before do 
-        fill_in "Name",                  with: "jahonna bova"
-        fill_in "Email",                 with: "master@master.com"
-        fill_in "Password",              with: "password"
-        fill_in "Password Confirmation", with: "password"
+        fill_in "Master's Name",                  with: "Mr Magoo"
+        fill_in "Master's Email",                 with: "master@master.com"
+        fill_in "Master's password",              with: "123456"
+        fill_in "Password Confirmation",          with: "123456"
       end
 
       it "should create a master" do 
