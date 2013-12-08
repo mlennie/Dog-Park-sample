@@ -34,10 +34,19 @@ describe "AuthenticationPages" do
   			click_button "Play Time"
   		end
 
-  		it { should have_title(master.name) }
-  		it { should have_link('Home', href: master_path(dog)) }
-  		it { should have_link('NapTime', href: naptime_path) }
+  		it { should have_title("Home") }
+  		it { should have_link('Dog Park', href: root_path) }
+  		it { should have_link('Backyard', href: backyard_path) }
+      it { should have_link('Account', href: '#') }
   		it { should_not have_link('Play Time', href: playtime_path)}
-  	end
+
+      context "it should have dropdown with proper links" do 
+        before { click_link "Account" }
+
+        it { should have_link('Home', href: master_path(master)) }
+        it { should have_link('Settings', href: '#') }
+        it { should have_link('Nap Time', href: naptime_path) }
+      end
+    end 
   end
 end

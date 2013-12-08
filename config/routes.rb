@@ -3,13 +3,14 @@ DogPark::Application.routes.draw do
   resources :masters
   resources :sessions, only: [:new, :create, :destroy]
   root 'static_pages#home'
-  get '/join',  to: 'masters#new'
+  get '/backyard',   to: 'dogs#show'
+  get '/join',       to: 'masters#new'
   get '/playtime',   to: 'sessions#new'
-  get '/naptime', to: 'sessions#destroy'
-  get '/help',    to: 'static_pages#help'    
-  get '/about',   to: 'static_pages#about'
-  get '/contact', to: 'static_pages#contact'
-  get '/faq',     to: 'static_pages#faq'
+  get '/naptime',    to: 'sessions#destroy'
+  get '/help',       to: 'static_pages#help'    
+  get '/about',      to: 'static_pages#about'
+  get '/contact',    to: 'static_pages#contact'
+  get '/faq',        to: 'static_pages#faq'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

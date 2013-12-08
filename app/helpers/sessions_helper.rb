@@ -5,4 +5,17 @@ module SessionsHelper
 		master.update_attribute(:remember_token, Master.encrypt(remember_token))
 		self.current_master = master
 	end
+
+	def signed_in?
+		!current_master.nil?
+	end
+
+	def current_master=(master)
+		@current_master = master
+	end
+
+	def current_master
+		remember_token = Master.encrypt(cookies[:remember_token] )
+		@current_master ||= Master.find_by(remember_token: remember_token)
+	end
 end

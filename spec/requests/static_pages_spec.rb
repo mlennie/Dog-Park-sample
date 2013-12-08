@@ -50,8 +50,8 @@ describe "StaticPages" do
     expect(page).to have_title('FAQ')
     click_link "Home"
     expect(page).to have_title('Home')
-    click_link "Sign up now!"
-    expect(page).to have_title('Sign up')
+    click_link "Join the pack!"
+    expect(page).to have_title('Join')
   end
 end
 
