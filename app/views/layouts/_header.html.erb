@@ -13,7 +13,7 @@
               </a>
               <ul class="dropdown-menu">
                 <li><%= link_to "Home", current_master %></li>
-                <li><%= link_to "Settings", '#' %></li>
+                <li><%= link_to "Settings", edit_master_path(current_master) %></li>
                 <li class="divider"></li>
                 <li> 
                   <%= link_to "Nap Time", naptime_path, method: "delete" %>

@@ -65,4 +65,64 @@ describe "MasterPages" do
   	it { should have_content(master.name) }
   	it { should have_title(master.name) }
   end
+
+  context "edit" do 
+    let(:master) { FactoryGirl.create(:master) }
+    before { visit edit_master_path(master) }
+
+    context "page" do
+      it { should have_content("Update your profile") }
+      it { should have_title("Edit Master") }
+      it { should have_link('change', href: 'http://gravatar.com/emails') }
+    end
+
+    context "with invalid information" do 
+      before { click_button "Save changes" }
+
+      it { should have_content('error') }
+    end
+
+    context "with valid information" do 
+      let(:new_name) { "New Name" }
+      let(:new_email) { "new@example.com" }
+      before do 
+        fill_in "Name", with: new_name
+        fill_in "Email", with: new_email
+        fill_in "Password", with: master.password
+        fill_in "Confirm Password", with: master.password
+        click_button "Save changes"
+      end
+
+      it { should have_title(new_name) }
+      it { should have_selector('div.alert.alert-success') }
+      it { should have_link('Nap Time', href: naptime_path) }
+      specify { expect(master.reload.name).to eq new_name }
+      specify { expect(master.reload.email).to eq new_email }
+    end
+  end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

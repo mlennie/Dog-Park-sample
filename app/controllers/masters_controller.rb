@@ -19,6 +19,20 @@ class MastersController < ApplicationController
   	end
   end
 
+  def edit
+    @master = Master.find(params[:id])
+  end
+
+  def update
+    @master = Master.find(params[:id])
+    if @master.update_attributes(master_params)
+      flash[:success] = "Profile updated"
+      redirect_to @master
+    else
+      render 'edit'
+    end
+  end
+
   private
 
   	def master_params

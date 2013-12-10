@@ -28,25 +28,16 @@ describe "AuthenticationPages" do
 
   	context "with valid information" do 
   		let(:master) { FactoryGirl.create(:master) }
-  		before do 
-  			fill_in "Email", with: master.email.upcase
-  			fill_in "Password", with: master.password
-  			click_button "Play Time"
-  		end
+  		before { sign_in master }
 
   		it { should have_title("Home") }
   		it { should have_link('Dog Park', href: root_path) }
   		it { should have_link('Backyard', href: backyard_path) }
       it { should have_link('Account', href: '#') }
   		it { should_not have_link('Play Time', href: playtime_path)}
-
-      context "it should have dropdown with proper links" do 
-        before { click_link "Account" }
-
-        it { should have_link('Home', href: master_path(master)) }
-        it { should have_link('Settings', href: '#') }
-        it { should have_link('Nap Time', href: naptime_path) }
-      end
+      it { should have_link('Home', href: master_path(master)) }
+      it { should have_link('Settings', href: edit_master_path(master)) }
+      it { should have_link('Nap Time', href: naptime_path) }
 
       context "followed by signout" do 
         before { click_link "Nap Time" }
