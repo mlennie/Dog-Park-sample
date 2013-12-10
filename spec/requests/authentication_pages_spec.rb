@@ -47,6 +47,11 @@ describe "AuthenticationPages" do
         it { should have_link('Settings', href: '#') }
         it { should have_link('Nap Time', href: naptime_path) }
       end
+
+      context "followed by signout" do 
+        before { click_link "Nap Time" }
+        it { should have_link('Play Time') }
+      end
     end 
   end
 end

@@ -51,6 +51,7 @@ describe "MasterPages" do
         before { click_button submit }
         let(:master) { Master.find_by(email: 'master@master.com') }
 
+        it { should have_link('Nap Time')}
         it { should have_title(master.name) }
         it { should have_selector('div.alert.alert-success', text: 'Welcome') }
       end

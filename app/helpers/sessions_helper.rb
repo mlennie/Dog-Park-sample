@@ -18,4 +18,9 @@ module SessionsHelper
 		remember_token = Master.encrypt(cookies[:remember_token] )
 		@current_master ||= Master.find_by(remember_token: remember_token)
 	end
+
+	def sign_out
+		self.current_master = nil
+		cookies.delete(:remember_token)
+	end
 end

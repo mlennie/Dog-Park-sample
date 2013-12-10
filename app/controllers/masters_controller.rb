@@ -11,6 +11,7 @@ class MastersController < ApplicationController
   def create
   	@master = Master.new(master_params)
   	if @master.save
+      sign_in @master
       flash[:success] = "Welcome to Dog Park!"
   		redirect_to @master
   	else

@@ -6,7 +6,7 @@ DogPark::Application.routes.draw do
   get '/backyard',   to: 'dogs#show'
   get '/join',       to: 'masters#new'
   get '/playtime',   to: 'sessions#new'
-  get '/naptime',    to: 'sessions#destroy'
+  delete '/naptime',    to: 'sessions#destroy'
   get '/help',       to: 'static_pages#help'    
   get '/about',      to: 'static_pages#about'
   get '/contact',    to: 'static_pages#contact'
