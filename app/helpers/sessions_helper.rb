@@ -19,8 +19,21 @@ module SessionsHelper
 		@current_master ||= Master.find_by(remember_token: remember_token)
 	end
 
+	def current_master?(master)
+		master == current_master
+	end
+
 	def sign_out
 		self.current_master = nil
 		cookies.delete(:remember_token)
+	end
+
+	def redirect_back_or(default)
+		redirect_to(session[:return_to] || default)
+		session.delete(:return_to)
+	end
+
+	def store_location
+		session[:return_to] = request.url if request.get?
 	end
 end

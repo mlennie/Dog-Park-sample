@@ -1,11 +1,13 @@
 class MastersController < ApplicationController
+  before_action "signed_in_master", only: [:index, :edit, :update]
+  before_action "correct_master", only: [:edit, :update]
 	
-  def new
-  	@master = Master.new
+  def index
+    @masters = Master.paginate(page: params[:page])
   end
 
-  def show
-  	@master = Master.find(params[:id])
+  def new
+  	@master = Master.new
   end
 
   def create
@@ -19,12 +21,14 @@ class MastersController < ApplicationController
   	end
   end
 
-  def edit
+  def show
     @master = Master.find(params[:id])
   end
 
+  def edit
+  end
+
   def update
-    @master = Master.find(params[:id])
     if @master.update_attributes(master_params)
       flash[:success] = "Profile updated"
       redirect_to @master
@@ -38,4 +42,35 @@ class MastersController < ApplicationController
   	def master_params
       params.require(:master).permit(:name, :email, :password, :password_confirmation)
     end
+
+    #Before filters
+
+    def signed_in_master
+      unless signed_in?
+        store_location
+        redirect_to playtime_url, notice: "Please sign in."
+      end
+    end
+
+    def correct_master
+      @master = Master.find(params[:id])
+      redirect_to root_url, notice: "You do not have access to this request." unless current_master?(@master)
+    end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -51,7 +51,7 @@ describe "MasterPages" do
         before { click_button submit }
         let(:master) { Master.find_by(email: 'master@master.com') }
 
-        it { should have_link('Nap Time')}
+        it { should have_link('Nap Time') }
         it { should have_title(master.name) }
         it { should have_selector('div.alert.alert-success', text: 'Welcome') }
       end
@@ -68,7 +68,10 @@ describe "MasterPages" do
 
   context "edit" do 
     let(:master) { FactoryGirl.create(:master) }
-    before { visit edit_master_path(master) }
+    before do 
+      sign_in master
+      visit edit_master_path(master) 
+   end
 
     context "page" do
       it { should have_content("Update your profile") }
@@ -98,6 +101,38 @@ describe "MasterPages" do
       it { should have_link('Nap Time', href: naptime_path) }
       specify { expect(master.reload.name).to eq new_name }
       specify { expect(master.reload.email).to eq new_email }
+    end
+  end
+
+  context "index page" do 
+    before do 
+      sign_in FactoryGirl.create(:master) 
+      FactoryGirl.create(:master, name: "Bob", email: "bob@example.com")
+      FactoryGirl.create(:master, name: "Ben", email: "ben@example.com")
+      visit masters_path
+    end
+
+    it { should have_title('All masters') }
+    it { should have_content('All masters') }
+
+    it "should list each master" do 
+      Master.all.each do |master|
+        expect(page).to have_selector('li', text: master.name)
+      end
+    end
+
+    context "pagination" do 
+
+      before(:all) { 30.times { FactoryGirl.create(:master) } }
+      after(:all) { Master.delete_all }
+
+      it { should have_selector('div.pagination') }
+
+      it "should list each master" do 
+        Master.paginate(page: 1).each do |master|
+          expect(page).to have_selector('li', text: master.name)
+        end
+      end
     end
   end
 end
