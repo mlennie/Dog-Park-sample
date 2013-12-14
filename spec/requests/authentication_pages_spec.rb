@@ -96,6 +96,18 @@ describe "Authentication" do
         specify { expect(response).to redirect_to(root_url) }
       end
     end
+
+    context "as non-admin master" do 
+      let(:master) { FactoryGirl.create(:master) }
+      let(:non_admin) { FactoryGirl.create(:master) }
+
+      before { sign_in non_admin, no_capybara: true }
+
+      context "submitting a DELETE request to the Masters#destroy action" do 
+        before { delete master_path(master) }
+        specify { expect(response).to redirect_to(root_url) }
+      end
+    end
   end
 end
 

@@ -1,4 +1,8 @@
 <li>
 	<%= gravatar_for master, size: 52 %>
 	<%= link_to master.name, master %>
+	<% if current_master.admin? && !current_master?(master) %>
+		| <%= link_to "delete", master, method: :delete,
+									  data: { confirm: "Are you sure you want to delete this master?" } %>
+	<% end %>
 </li>

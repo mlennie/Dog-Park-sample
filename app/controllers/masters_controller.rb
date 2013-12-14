@@ -1,6 +1,7 @@
 class MastersController < ApplicationController
-  before_action "signed_in_master", only: [:index, :edit, :update]
-  before_action "correct_master", only: [:edit, :update]
+  before_action :signed_in_master, only: [:index, :edit, :update, :destroy]
+  before_action :correct_master, only: [:edit, :update]
+  before_action :admin_user, only: :destroy
 	
   def index
     @masters = Master.paginate(page: params[:page])
@@ -37,6 +38,12 @@ class MastersController < ApplicationController
     end
   end
 
+  def destroy
+    Master.find(params[:id]).destroy
+    flash[:success] = "Master deleted. Hope you feel good about yourself."
+    redirect_to masters_url
+  end
+
   private
 
   	def master_params
@@ -55,6 +62,10 @@ class MastersController < ApplicationController
     def correct_master
       @master = Master.find(params[:id])
       redirect_to root_url, notice: "You do not have access to this request." unless current_master?(@master)
+    end
+
+    def admin_user
+      redirect_to(root_url) unless current_master.admin?
     end
 end
 

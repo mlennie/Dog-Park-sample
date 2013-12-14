@@ -134,6 +134,27 @@ describe "MasterPages" do
         end
       end
     end
+
+    context "delete links" do 
+
+      it { should_not have_link('delete') }
+
+      context "as an admin masters" do 
+        let(:admin) { FactoryGirl.create(:admin) }
+        before do 
+          sign_in admin
+          visit masters_path
+        end
+
+        it { should have_link('delete', href: master_path(Master.first)) }
+        it "should be able to delete another master" do 
+          expect do 
+            click_link('delete', match: :first)
+          end.to change(Master, :count).by(-1)
+        end
+        it { should_not have_link('delete', href: master_path(admin)) }
+      end
+    end
   end
 end
 
