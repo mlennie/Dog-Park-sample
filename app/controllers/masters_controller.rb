@@ -2,6 +2,7 @@ class MastersController < ApplicationController
   before_action :signed_in_master, only: [:index, :edit, :update, :destroy]
   before_action :correct_master, only: [:edit, :update]
   before_action :admin_user, only: :destroy
+  before_action :already_signed_in, only: [:new, :create]
 	
   def index
     @masters = Master.paginate(page: params[:page])
@@ -39,7 +40,7 @@ class MastersController < ApplicationController
   end
 
   def destroy
-    Master.find(params[:id]).destroy
+    @master.destroy
     flash[:success] = "Master deleted. Hope you feel good about yourself."
     redirect_to masters_url
   end
@@ -65,7 +66,12 @@ class MastersController < ApplicationController
     end
 
     def admin_user
-      redirect_to(root_url) unless current_master.admin?
+      @master = Master.find(params[:id])
+      redirect_to root_url, notice: "You can't delete this person." if !current_master.admin? || current_master?(@master) 
+    end
+
+    def already_signed_in
+        redirect_to root_url, notice: "You cannot complete this request when signed in." if signed_in?
     end
 end
 

@@ -39,7 +39,7 @@ describe "MasterPages" do
       before do 
         fill_in "Master's Name",                  with: "Mr Magoo"
         fill_in "Master's Email",                 with: "master@master.com"
-        fill_in "Master's password",              with: "123456"
+        fill_in "Master's Password",              with: "123456"
         fill_in "Password Confirmation",          with: "123456"
       end
 
@@ -89,10 +89,10 @@ describe "MasterPages" do
       let(:new_name) { "New Name" }
       let(:new_email) { "new@example.com" }
       before do 
-        fill_in "Name", with: new_name
-        fill_in "Email", with: new_email
-        fill_in "Password", with: master.password
-        fill_in "Confirm Password", with: master.password
+        fill_in "Master's Name", with: new_name
+        fill_in "Master's Email", with: new_email
+        fill_in "Master's Password", with: master.password
+        fill_in "Password Confirmation", with: master.password
         click_button "Save changes"
       end
 
@@ -101,6 +101,18 @@ describe "MasterPages" do
       it { should have_link('Nap Time', href: naptime_path) }
       specify { expect(master.reload.name).to eq new_name }
       specify { expect(master.reload.email).to eq new_email }
+    end
+
+    context "forbidden attributes" do 
+      let(:params) do 
+        { master: { admin: true, password: master.password,
+                    password_confirmation: master.password } }
+      end
+      before do 
+        sign_in master, no_capybara: true
+        patch master_path(master), params
+      end
+      specify { expect(master.reload).to_not be_admin }
     end
   end
 
