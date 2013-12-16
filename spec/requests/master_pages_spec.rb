@@ -60,10 +60,19 @@ describe "MasterPages" do
 
   context "profile page" do 
   	let(:master) { FactoryGirl.create(:master) }
+    let!(:p1) { FactoryGirl.create(:post, master: master, content: "Foo") }
+    let!(:p2) { FactoryGirl.create(:post, master: master, content: "Bar") }
+
   	before { visit master_path(master) }
 
   	it { should have_content(master.name) }
   	it { should have_title(master.name) }
+
+    context "posts" do 
+      it { should have_content(p1.content) }
+      it { should have_content(p2.content) }
+      it { should have_content(master.posts.count) }
+    end
   end
 
   context "edit" do 

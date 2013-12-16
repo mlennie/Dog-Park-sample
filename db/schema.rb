@@ -11,20 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20131215173918) do
+ActiveRecord::Schema.define(version: 20131216125012) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "dogs", force: true do |t|
-    t.string   "name"
-    t.string   "email"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-    t.string   "password_digest"
-  end
-
-  add_index "dogs", ["email"], name: "index_dogs_on_email", unique: true, using: :btree
 
   create_table "masters", force: true do |t|
     t.string   "name"

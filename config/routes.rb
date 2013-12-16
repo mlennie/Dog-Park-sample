@@ -2,6 +2,7 @@ DogPark::Application.routes.draw do
   resources :dogs
   resources :masters
   resources :sessions, only: [:new, :create, :destroy]
+  resources :posts, only: [:create, :destroy]
   root 'static_pages#home'
   get '/backyard',   to: 'dogs#show'
   get '/join',       to: 'masters#new'

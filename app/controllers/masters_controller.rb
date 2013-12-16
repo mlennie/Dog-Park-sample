@@ -25,6 +25,7 @@ class MastersController < ApplicationController
 
   def show
     @master = Master.find(params[:id])
+    @posts = @master.posts.paginate(page: params[:page])
   end
 
   def edit

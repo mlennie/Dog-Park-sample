@@ -15,5 +15,11 @@ namespace :db do
 						   password: password,
 						   password_confirmation: password)
 		end
+
+		masters = Master.all(limit: 6)
+		50.times do 
+			content = Faker::Lorem.sentence(5)
+			masters.each { |master| master.posts.create!(content: content) }
+		end
 	end
 end

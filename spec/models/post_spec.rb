@@ -18,4 +18,14 @@ describe Post do
 		before { @post.master_id = nil }
 		it { should_not be_valid }
 	end
+
+	context "with blank content" do 
+		before { @post.content = " " }
+		it { should_not be_valid }
+	end
+
+	context "with content that is too long" do 
+		before { @post.content = "a" * 5001 }
+		it { should_not be_valid }
+	end
 end
