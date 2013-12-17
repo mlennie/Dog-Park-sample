@@ -18,6 +18,11 @@ class Master < ActiveRecord::Base
 	def Master.encrypt(token)
 		Digest::SHA1.hexdigest(token.to_s)
 	end
+
+	def feed
+		#this is the preliminary
+		Post.where("master_id = ?", id)
+	end
 	
 	private 
 

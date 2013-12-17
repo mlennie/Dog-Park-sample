@@ -84,6 +84,19 @@ describe "Authentication" do
             expect(page).to have_title(master.name)
           end
         end
+
+        context "in the Posts controller" do 
+
+          context "submitting to the create action" do 
+            before { post posts_path }
+            specify { expect(response).to redirect_to(playtime_path) }
+          end
+
+          context "submitting to the destroy action" do 
+            before { delete post_path(FactoryGirl.create(:post)) }
+            specify { expect(response).to redirect_to(playtime_path) }
+          end
+        end
       end
 
       context "visiting the edit page" do 

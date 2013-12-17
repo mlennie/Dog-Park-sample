@@ -54,13 +54,6 @@ class MastersController < ApplicationController
 
     #Before filters
 
-    def signed_in_master
-      unless signed_in?
-        store_location
-        redirect_to playtime_url, notice: "Please sign in."
-      end
-    end
-
     def correct_master
       @master = Master.find(params[:id])
       redirect_to root_url, notice: "You do not have access to this request." unless current_master?(@master)

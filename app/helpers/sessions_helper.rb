@@ -23,6 +23,13 @@ module SessionsHelper
 		master == current_master
 	end
 
+	def signed_in_master
+      unless signed_in?
+        store_location
+        redirect_to playtime_url, notice: "Please sign in."
+      end
+    end
+
 	def sign_out
 		self.current_master = nil
 		cookies.delete(:remember_token)

@@ -14,6 +14,22 @@ describe "StaticPages" do
     let(:page_title) { 'Dog Park' }
 
     it_should_behave_like "all static pages"
+
+    context "for signed-in masters" do 
+      let(:master) { FactoryGirl.create(:master) }
+      before do 
+        FactoryGirl.create(:post, master: master, content: "Lorem ipsum")
+        FacotryGirl.create(:post, master: master, content: "Dolor sit amet")
+        sign_in master
+        visit root_path
+      end
+
+      it "should render the master's feed" do 
+        master.feed.each do |item|
+          expect(page).to have_selector("li##{item.id}", text: item.content)
+        end
+      end
+    end
   end
 
   context "About page" do 
