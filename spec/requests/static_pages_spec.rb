@@ -17,9 +17,11 @@ describe "StaticPages" do
 
     context "for signed-in masters" do 
       let(:master) { FactoryGirl.create(:master) }
+      let(:wrong_master) { FactoryGirl.create(:master) }
+      let!(:wrong_masters_post) { FactoryGirl.create(:post, master: wrong_master, content: "not your post") }
       before do 
         FactoryGirl.create(:post, master: master, content: "Lorem ipsum")
-        FacotryGirl.create(:post, master: master, content: "Dolor sit amet")
+        FactoryGirl.create(:post, master: master, content: "Dolor sit amet")
         sign_in master
         visit root_path
       end
@@ -27,6 +29,37 @@ describe "StaticPages" do
       it "should render the master's feed" do 
         master.feed.each do |item|
           expect(page).to have_selector("li##{item.id}", text: item.content)
+        end
+      end
+      
+      context "should count the correct number of posts" do 
+        context "when there's one post" do 
+          before do 
+            master.posts.find_by(content: "Lorem ipsum").destroy 
+            visit root_path
+          end
+          it { should have_content("1 post") }
+        end
+
+        context "when there's two posts" do 
+
+          it { should have_content("2 posts")}
+        end
+      end
+
+      context "pagination" do 
+        it "should paginate the feed" do 
+          30.times { FactoryGirl.create(:post, master: master, content: "Consectetur adipiscing") }
+          visit root_path
+          expect(page).to have_selector("div.pagination") 
+        end
+      end
+
+      context "post delete links" do 
+        before { visit master_path(wrong_master) }
+        
+        context "for non_master's profile page" do
+          it { should_not have_link("delete") }
         end
       end
     end

@@ -30,4 +30,33 @@ describe "Post pages" do
 			end
 		end
 	end
+
+	context "post destruction" do 
+		before { FactoryGirl.create(:post, master: master) }
+
+		context "as correct master" do 
+			before { visit root_path }
+
+			it "should delete a post" do 
+				expect { click_link "delete" }.to change(Post, :count).by(-1)
+			end
+		end
+	end
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

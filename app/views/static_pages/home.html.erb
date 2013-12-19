@@ -1,25 +1,8 @@
 <% provide(:title, 'Home') %>
 <% if signed_in? %>
-	<div class="row">
-		<aside class="span4">
-			<section>
-				<%= render 'shared/master_info' %>
-			</section>
-			<section>
-				<%= render 'shared/post_form' %>
-			</section>
-		</aside>
-	</div>
+	<%= render 'shared/signed_in' %>
 <% else %>
-	<div class="center hero-unit">
-	  <h1>Welcome to Dog Park</h1>
-
-	  <h2>
-	    Here you can play with all you neighbourhood buddies.
-	  </h2>
-
-	  <%= link_to "Join the pack!", join_path, class: "btn btn-large btn-primary", id: "button" %>
-	</div>
+	<%= render 'shared/not_signed_in' %>
 <% end %>
 
 
