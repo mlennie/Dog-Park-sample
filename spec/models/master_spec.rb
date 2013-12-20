@@ -19,6 +19,13 @@ describe Master do
   it { should respond_to(:admin) }
   it { should respond_to(:posts) }
   it { should respond_to(:feed) }
+  it { should respond_to(:relationships) }
+  it { should respond_to(:followed_masters) }
+  it { should respond_to(:reverse_relationships) }
+  it { should respond_to(:followers) }
+  it { should respond_to(:following?) }
+  it { should respond_to(:follow!) }
+  it { should respond_to(:unfollow!) }
 
   it { should be_valid }
   it { should_not be_admin }
@@ -163,6 +170,29 @@ describe Master do
       its(:feed) { should include(older_post) }
       its(:feed) { should_not include(unfollowed_post) }
     end 
+  end
+
+  context "following" do 
+    let(:other_master) { FactoryGirl.create(:master) }
+    before do 
+      @master.save
+      @master.follow!(other_master)
+    end
+
+    it { should be_following(other_master) }
+    its(:followed_masters) { should include(other_master) }
+
+    context "followed master" do 
+      subject { other_master }
+      its(:followers) { should include(@master)}
+    end
+
+    context "and unfollowing" do 
+       before { @master.unfollow!(other_master) }                 
+
+       it { should_not be_following(other_master) }
+       its(:followed_masters) { should_not include(other_master)}
+    end
   end
 end
 

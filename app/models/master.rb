@@ -1,5 +1,11 @@
 class Master < ActiveRecord::Base
 	has_many :posts, dependent: :destroy
+	has_many :relationships, foreign_key: "follower_id", dependent: :destroy
+	has_many :followed_masters, through: :relationships, source: :followed 
+	has_many :reverse_relationships, foreign_key: "followed_id",
+									 class_name: "Relationship",
+									 dependent: :destroy
+	has_many :followers, through: :reverse_relationships, source: :follower
 	before_save { email.downcase! }
 	before_create :create_remember_token
 	has_secure_password
@@ -22,6 +28,18 @@ class Master < ActiveRecord::Base
 	def feed
 		#this is the preliminary
 		Post.where("master_id = ?", id)
+	end
+
+	def following?(other_master) 
+		self.relationships.find_by(followed_id: other_master.id)
+	end
+
+	def follow!(other_master)
+		self.relationships.create!(followed_id: other_master.id)
+	end
+
+	def unfollow!(other_master)
+		self.relationships.find_by(followed_id: other_master.id).destroy
 	end
 	
 	private 
