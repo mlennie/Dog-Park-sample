@@ -62,6 +62,17 @@ describe "StaticPages" do
           it { should_not have_link("delete") }
         end
       end
+
+      context "follower/following counts" do
+        let(:other_master) { FactoryGirl.create(:master) }
+        before do 
+          other_master.follow!(master)
+          visit root_path
+        end
+
+        it { should have_link("0 following", href: following_master_path(master)) }
+        it { should have_link("1 followers", href: followers_master_path(master)) }
+      end
     end
   end
 
