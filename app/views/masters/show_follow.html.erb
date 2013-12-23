@@ -1,0 +1,30 @@
+<% provide(:title, @title) %>
+<div class="row">
+	<aside class="span4">
+		<section> <!--master info and post number -->
+			<%= gravatar_for @master %>
+			<h1><%= @master.name %></h1>
+			<span><%= link_to "view my profile", @master %></span>
+			<span><b>Posts: </b><%= @master.posts.count %></span>
+		</section>
+		<section> <!--stats and master avatars -->
+			<%= render 'shared/stats' %>
+			<% if @masters.any? %>
+				<div class="master_avatars">
+					<% @masters.each do |master| %>
+						<%= link_to gravatar_for(master, size: 30), master %>
+					<% end %>
+				</div>
+			<% end %>
+		</section>
+	</aside>
+	<div class="span8"> <!-- list masters -->
+		<h3><%= @title %></h3>
+		<% if @masters.any? %>
+			<ul class="masters">
+				<%= render @masters %>
+			</ul>
+			<%= will_paginate %>
+		<% end %>
+	</div>
+</div>

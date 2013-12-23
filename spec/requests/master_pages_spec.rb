@@ -73,6 +73,56 @@ describe "MasterPages" do
       it { should have_content(p2.content) }
       it { should have_content(master.posts.count) }
     end
+
+    context "follow/unfollow buttons" do 
+      let(:other_master) { FactoryGirl.create(:master) }
+      before { sign_in master }
+    
+      context "following a master" do 
+        before { visit master_path(other_master)}
+
+        it "should increment the followed master count" do 
+          expect do 
+            click_button "Follow"
+          end.to change(master.followed_masters, :count).by(1)
+        end
+
+        it "should increment the other master's followers count" do 
+          expect do 
+            click_button "Follow"
+          end.to change(other_master.followers, :count).by(1)
+        end
+
+        context "toggling the button" do 
+          before { click_button "Follow" }
+          it { should have_xpath("//input[@value='Unfollow']") }
+        end
+      end
+
+      context "unfollowing a master" do
+        before do 
+          master.follow!(other_master)
+          visit master_path(other_master)
+        end
+
+        it "should decrement the followed master count" do 
+          expect do 
+            click_button "Unfollow"
+          end.to change(master.followed_masters, :count).by(-1)
+        end 
+
+        it "should decrement the other master's followers count" do 
+          expect do 
+            click_button "Unfollow" 
+          end.to change(other_master.followers, :count).by(-1)
+        end
+
+        context "toggling the button" do 
+          before { click_button "Unfollow" }
+          it { should have_xpath("//input[@value='Follow']") }
+        end
+      end
+    end
   end
 
   context "edit" do 
@@ -175,6 +225,34 @@ describe "MasterPages" do
         end
         it { should_not have_link('delete', href: master_path(admin)) }
       end
+    end
+  end
+
+  context "following/followers" do 
+    let(:master) { FactoryGirl.create(:master) }
+    let(:other_master) { FactoryGirl.create(:master) }
+    before { master.follow!(other_master) }
+
+    context "followed masters" do 
+      before do 
+        sign_in master
+        visit following_master_path(master) 
+      end
+
+      it { should have_title('Following') }
+      it { should have_selector('h3', text: 'Following') }
+      it { should have_link(other_master.name, href: master_path(other_master)) }
+    end
+
+    context "followers" do 
+      before do 
+        sign_in other_master
+        visit followers_master_path(other_master)
+      end
+
+      it { should have_title('Followers') }
+      it { should have_selector('h3', text: 'Followers') }
+      it { should have_link(master.name, href: master_path(master)) }
     end
   end
 end

@@ -1,5 +1,4 @@
 DogPark::Application.routes.draw do
-  resources :dogs
   resources :masters do 
     member do 
       get :following, :followers

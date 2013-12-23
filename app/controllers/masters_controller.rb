@@ -1,5 +1,5 @@
 class MastersController < ApplicationController
-  before_action :signed_in_master, only: [:index, :edit, :update, :destroy]
+  before_action :signed_in_master, only: [:index, :edit, :update, :destroy, :following, :followers]
   before_action :correct_master, only: [:edit, :update]
   before_action :admin_user, only: :destroy
   before_action :already_signed_in, only: [:new, :create]
@@ -44,6 +44,20 @@ class MastersController < ApplicationController
     @master.destroy
     flash[:success] = "Master deleted. Hope you feel good about yourself."
     redirect_to masters_url
+  end
+
+  def following
+    @title = "Following"
+    @master = Master.find(params[:id])
+    @masters = @master.followed_masters.paginate(page: params[:page])
+    render 'show_follow'
+  end
+
+  def followers
+    @title = "Followers" 
+    @master = Master.find(params[:id])
+    @masters = @master.followers.paginate(page: params[:page])
+    render 'show_follow'
   end
 
   private

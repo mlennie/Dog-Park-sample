@@ -59,6 +59,19 @@ describe "Authentication" do
     context "for non-signed-in masters" do 
       let(:master) { FactoryGirl.create(:master) }
 
+      context "in the Masters controller" do 
+
+        context "visiting the following page" do 
+          before { visit following_master_path(master) }
+          it { should have_title('Play Time') }
+        end
+
+        context "visiting the followers page" do 
+          before { visit followers_master_path(master) }
+          it { should have_title('Play Time') }
+        end
+      end
+
       context "when attempting to visit a protected page" do 
         before do
           visit edit_master_path(master)
