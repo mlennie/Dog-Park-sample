@@ -26,8 +26,7 @@ class Master < ActiveRecord::Base
 	end
 
 	def feed
-		#this is the preliminary
-		Post.where("master_id = ?", id)
+		Post.from_masters_followed_by(self)
 	end
 
 	def following?(other_master) 

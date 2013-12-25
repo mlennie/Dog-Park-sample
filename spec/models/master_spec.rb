@@ -165,10 +165,21 @@ describe Master do
       let(:unfollowed_post) do 
         FactoryGirl.create(:post, master: FactoryGirl.create(:master))
       end
+      let(:followed_master) { FactoryGirl.create(:master) }
+
+      before do 
+        @master.follow!(followed_master)
+        3.times { followed_master.posts.create!(content: "Lorem ipsum") }
+      end
     
       its(:feed) { should include(newer_post) }
       its(:feed) { should include(older_post) }
       its(:feed) { should_not include(unfollowed_post) }
+      its(:feed) do 
+        followed_master.posts.each do |post|
+          should include(post)
+        end
+      end
     end 
   end
 
